@@ -6,17 +6,18 @@ before_install:
   - docker build -t sdiokhe/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run -e CI=true sdiokhe/react-test npm test
+  #- docker run -e CI=true sdiokhe/react-test npm test
+  - docker run sdiokhe/react-test npm test -- --coverage
 
 after_success:
   - docker build -t sdiokhe/multi-client ./client
-  #- docker build -t sdiokhe/multi-nginx ./nginx
-  #- docker build -t sdiokhe/multi-server ./server
-  #- docker build -t sdiokhe/multi-worker ./worker
+  - docker build -t sdiokhe/multi-nginx ./nginx
+  - docker build -t sdiokhe/multi-server ./server
+  - docker build -t sdiokhe/multi-worker ./worker
   # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take the images and push them to docker hub
   - docker push sdiokhe/multi-client
-#  - docker push sdiokhe/multi-nginx
-#  - docker push sdiokhe/multi-server
-#  - docker push sdiokhe/multi-worker
+  - docker push sdiokhe/multi-nginx
+  - docker push sdiokhe/multi-server
+  - docker push sdiokhe/multi-worker
