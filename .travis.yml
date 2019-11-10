@@ -7,7 +7,6 @@ before_install:
 
 script:
   - docker run -e CI=true sdiokhe/react-test npm test
-  #- docker run sdiokhe/react-test npm test -- --coverage
 
 after_success:
   - docker build -t sdiokhe/multi-client ./client
